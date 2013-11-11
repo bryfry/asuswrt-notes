@@ -48,12 +48,12 @@ Most of the tweaks and additions in the merlin version of asuswrt are on the Sys
 This is definitely something that bothers me, if I choose to allow a self signed cert, all the major browsers all just say "h'okay, we'll let you accept this cert, but we will always show a red X for it because it is self signed".  This makes sense, except for one thing, If that cert changes the acceptance behavior IS EXACTLY THE SAME.  IMO these certs should be stored locally in a browser cache and give a super bad alert if the cert changes for the same host (in the same way that openssh-client handles host identities).  So, the only real way to fix this is to go out of our way and add these certs to the OS level trusted certs.  Also, the router makes new certs every boot, so we need to make them persistent:
 
 #### Create a persisting self signed key
-* Create the key: 
+* Create the key (replace the {{}}'ed names) 
         
          openssl req -x509 -newkey rsa:2048 -days 365 -nodes \
           -keyout /jffs/keys/key.pem \
           -out /jffs/keys/cert.pem \
-          -subj '/CN=[networkname]/O=[Toung in Cheek Org]/C=US'
+          -subj '/CN={{networkname}}/O={{org}}/C=US'
 
 * Add the below lines to /jffs/scripts/services-start (via [forum](http://forums.smallnetbuilder.com/showthread.php?t=10176))
 
@@ -70,7 +70,7 @@ So in order to make this work correctly you need to add the self signed cert int
 
 Entware
 -------
-The first step is to grab a mediocre usb drive that is laying around and [format it](http://www.itechlounge.net/2012/01/linux-partition-and-format-external-hard-drive-as-ext3-filesystem/). ext3 or ext2 are what are supported, so ext3 works.  Then plug it in.  ssh into the router and run `df -hm`.  The drive should show up and be mounted at something like `/tmp/mnt/sda1`. Follow the [Entware wiki](https://github.com/RMerl/asuswrt-merlin/wiki/Entware) ssetup guide.  From here I either just install the things I usually want, or get ansible to do it for me.
+The first step is to grab a mediocre usb drive that is laying around and [format it](http://www.itechlounge.net/2012/01/linux-partition-and-format-external-hard-drive-as-ext3-filesystem/). ext3 or ext2 are what are supported, so ext3 works.  Then plug it in.  ssh into the router and run `df -hm`.  The drive should show up and be mounted at something like `/tmp/mnt/sda1`. Follow the [Entware wiki](https://github.com/RMerl/asuswrt-merlin/wiki/Entware) ssetup guide.  From here I either just install the things I usually want, or get ansible to do it for me ([opkg module](http://www.ansibleworks.com/docs/modules.html#opkg)).
 
 * `opkg install python git openssh-keygen python-requests` # 'required'
 * `opkg install vim htop tcpdump openssh-client` # optional but nice
@@ -85,8 +85,8 @@ Work in progress, currently entware's pyhton is not compiled with ssl ([issue](h
 
 sshuttle
 --------
-Once python is installed and ssh is enabled your router is primed for using [sshuttle](https://github.com/apenwarr/sshuttle).  No other changes need to be made to the router at this point. An example use case would be if your router is set up as an open WiFi network but want to keep your internet connections private and secure to the router, this would work pretty well.
+Once python is installed and ssh is enabled your router is primed for using [sshuttle](https://github.com/apenwarr/sshuttle).  No other changes need to be made to the router at this point. An example use case would be if your router is set up as an open WiFi network but want to keep your internet connections private and secure to/through the router, this would work pretty well.
 
 You will need to tell sshuttle where the python binary is on the target, in this case: `/opt/bin/python`
 
-e.g.: `sshuttle --dns --python /opt/bin/python -r user@router 0/0`
+e.g.: `sshuttle --dns --python /opt/bin/python -r {{user}}@{{networkname}} 0/0`
