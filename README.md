@@ -50,18 +50,18 @@ This is definitely something that bothers me, if I choose to allow a self signed
 #### Create a persisting self signed key
 * Create the key: 
 
-    openssl req -x509 -newkey rsa:2048 -days 365 -nodes \
+      openssl req -x509 -newkey rsa:2048 -days 365 -nodes \
         -keyout /jffs/keys/key.pem \
         -out /jffs/keys/cert.pem \
         -subj '/CN=[networkname]/O=[Toung in Cheek Org]/C=US'
 
 * Add the below lines to /jffs/scripts/services-start (via [forum](http://forums.smallnetbuilder.com/showthread.php?t=10176))
 
-    mv /tmp/etc/key.pem /tmp/etc/key.pem.bak
-    mv /tmp/etc/cert.pem /tmp/etc/cert.pem.bak
-    cp /jffs/keys/key.pem /tmp/etc/key.pem
-    cp /jffs/keys/cert.pem /tmp/etc/cert.pem
-    service restart_httpd
+        mv /tmp/etc/key.pem /tmp/etc/key.pem.bak
+        mv /tmp/etc/cert.pem /tmp/etc/cert.pem.bak
+        cp /jffs/keys/key.pem /tmp/etc/key.pem
+        cp /jffs/keys/cert.pem /tmp/etc/cert.pem
+        service restart_httpd
 
 #### Add the self signed cert to trusted certs
 So in order to make this work correctly you need to add the self signed cert into your trusted certs (OS X, [more info](http://www.robpeck.com/2010/10/google-chrome-mac-os-x-and-self-signed-ssl-certificates/#.Un_4R2RDuiU)): 
