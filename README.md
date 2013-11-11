@@ -45,19 +45,23 @@ Most of the tweaks and additions in the merlin version of asuswrt are on the Sys
 * Enable Web Access from WAN (No)
 
 ### Persistent Web Admin SSL Cert
-This is definitely something that bothers me, if I choose to allow a self signed cert all the major browsers all just say "h'okay, we'll let you accept this cert, but we will always show a red X for it because it is self signed".  This makes sense, except for one thing, If that cert changes the acceptance behavior IS EXACTLY THE SAME.  IMO these certs should be stored locally in a browser cache and give a super bad alert if the cert changes for the same host (in the same way that openssh-client handles host identities).
+This is definitely something that bothers me, if I choose to allow a self signed cert, all the major browsers all just say "h'okay, we'll let you accept this cert, but we will always show a red X for it because it is self signed".  This makes sense, except for one thing, If that cert changes the acceptance behavior IS EXACTLY THE SAME.  IMO these certs should be stored locally in a browser cache and give a super bad alert if the cert changes for the same host (in the same way that openssh-client handles host identities).  So, the only real way to fix this is to go out of our way and add these certs to the OS level trusted certs.  Also, the router makes new certs every boot, so we need to make them persistent:
 
 #### Create a persisting self signed key
-* `openssl req -x509 -newkey rsa:2048 -keyout /jffs/keys/key.pem -out /
-jffs/keys/cert.pem -days 365 -nodes -subj '/CN=asusy/O=Asusy the router/C=US'`
+* Create the key: 
+
+    openssl req -x509 -newkey rsa:2048 -days 365 -nodes \
+        -keyout /jffs/keys/key.pem \
+        -out /jffs/keys/cert.pem \
+        -subj '/CN=[networkname]/O=[Toung in Cheek Org]/C=US'
+
 * Add the below lines to /jffs/scripts/services-start (via [forum](http://forums.smallnetbuilder.com/showthread.php?t=10176))
-```
-mv /tmp/etc/key.pem /tmp/etc/key.pem.bak
-mv /tmp/etc/cert.pem /tmp/etc/cert.pem.bak
-cp /jffs/keys/key.pem /tmp/etc/key.pem
-cp /jffs/keys/cert.pem /tmp/etc/cert.pem
-service restart_httpd
-```
+
+    mv /tmp/etc/key.pem /tmp/etc/key.pem.bak
+    mv /tmp/etc/cert.pem /tmp/etc/cert.pem.bak
+    cp /jffs/keys/key.pem /tmp/etc/key.pem
+    cp /jffs/keys/cert.pem /tmp/etc/cert.pem
+    service restart_httpd
 
 #### Add the self signed cert to trusted certs
 So in order to make this work correctly you need to add the self signed cert into your trusted certs (OS X, [more info](http://www.robpeck.com/2010/10/google-chrome-mac-os-x-and-self-signed-ssl-certificates/#.Un_4R2RDuiU)): 
