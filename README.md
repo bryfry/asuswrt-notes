@@ -1,18 +1,13 @@
 asuswrt-notes
 =============
 
-Notes on asuswrt fun
-
-Context and References
---------------------
-
 * Currently testing with an Asus RT-N16, all should apply to the RT-(AC|N)[5,6]6U's
 * See the [asuswrt-merlin](https://github.com/RMerl/asuswrt-merlin) and the awesome [wiki](https://github.com/RMerl/asuswrt-merlin/wiki) for more reference material
 * Definitely make sure to extract (.zip -> .trx) and then rename (.trx -> .bin) before uploading to Flash Firmware (only a dummy would upload the .zip...)
 * Follow the [Install](https://github.com/RMerl/asuswrt-merlin/wiki/Installation) instructions, pretty normal/basic
 
-Setup and First Steps
----------------------
+First Steps (web admin settings)
+--------------------------------
 Assumption is that the router is setup, networking, WiFi etc.
 At this point this section is mostly personal preferences, but there are some really silly defaults that need addressed:
 
@@ -48,7 +43,8 @@ Most of the tweaks and additions in the merlin version of asuswrt are on the Sys
 * HTTPS Lan Port - make sure Cloud Disk's port doesn't conflict, see above / [see issue](https://github.com/RMerl/asuswrt-merlin/issues/454)
 * Enable Web Access from WAN (No)
 
-### Persistent Web Admin SSL Cert
+Persistent Web Admin SSL Cert
+-----------------------------
 This is definitely something that bothers me.
 If I choose to allow a self signed cert, all the major browsers all just say: 
 "h'okay, we'll let you accept this cert, but we will always show a red X for it because it is self signed".
@@ -82,8 +78,8 @@ In order to make this work correctly you need to add the self signed cert into y
 * Drag the cert to the desktop (to save it)
 * Keychain Access > File > Import Item > (router cert).pem
 
-Entware
--------
+entware (optware alternative)
+-----------------------------
 The first step is to grab a mediocre usb drive that is laying around and [format it](http://www.itechlounge.net/2012/01/linux-partition-and-format-external-hard-drive-as-ext3-filesystem/).
 ext3 or ext2 are what are supported.
 Then plug it in and ssh into the router and run `df -hm`.
@@ -99,7 +95,7 @@ Email on WAN up
 Follow the [wiki](https://github.com/RMerl/asuswrt-merlin/wiki/Sending-Email).
 Make sure to use an [application specific password](https://support.google.com/accounts/answer/185833?hl=en) if you are using gmail
 
-Dynhover
+dynhover
 --------
 Work in progress, currently entware's pyhton is not compiled with ssl ([issue](https://code.google.com/p/wl500g-repo/issues/detail?id=268)).
 See ([dynhover](https://github.com/bryfry/dynhover))
