@@ -49,11 +49,11 @@ This is definitely something that bothers me, if I choose to allow a self signed
 
 #### Create a persisting self signed key
 * Create the key: 
-
-      openssl req -x509 -newkey rsa:2048 -days 365 -nodes \
-        -keyout /jffs/keys/key.pem \
-        -out /jffs/keys/cert.pem \
-        -subj '/CN=[networkname]/O=[Toung in Cheek Org]/C=US'
+        
+         openssl req -x509 -newkey rsa:2048 -days 365 -nodes \
+          -keyout /jffs/keys/key.pem \
+          -out /jffs/keys/cert.pem \
+          -subj '/CN=[networkname]/O=[Toung in Cheek Org]/C=US'
 
 * Add the below lines to /jffs/scripts/services-start (via [forum](http://forums.smallnetbuilder.com/showthread.php?t=10176))
 
